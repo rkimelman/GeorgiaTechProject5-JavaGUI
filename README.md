@@ -5,3 +5,5 @@
 - "Console Output Example" is an example of what will be printed in the console if the user selects "add two frequencies" in the first dropdown menu (and subsequently adds 200 HZ + 200 HZ) and "get note for frequency" in the second dropdown menu.
 
 - "GUI Output Example" is how the GUI looks (with the above parameters).
+
+*Note: in order to run this program, a jar file must be installed which can be found on jfugue.org.
