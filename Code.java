@@ -43,12 +43,12 @@ Runnable {
     private String third_note;
     private double frequency_of_other_note;
     private int midi_value;
-    private String yes_or_no;
+    private int yes_or_no;
     private double frequency_get_note;
     private double get_frequency_for_note;
     private String combined_frequencies;
     private double sum_of_frequencies;
-    private String note_to_use;
+    private int note_to_use;
     private int n_steps;
     private String note_for_frequency;
     private Player player;
@@ -91,7 +91,7 @@ Runnable {
         			combo_2.setModel(models[0]);
             	}
             	if(combo1.getSelectedItem().equals("Test if two notes are enharmonically equivalent")) {
-            		enharmonicEquivalence(false);
+            		enharmonicEquivalence(false, false);
             		combo_2.setEnabled(true);
             		combo_2.setModel(models[1]);
             	}
@@ -120,7 +120,7 @@ Runnable {
         		}
         		if(combo_2.getSelectedItem().equals("Find frequency of note that is n steps away")) {
         			findFrequencyOfNoteThatIsNStepsAway(true);
-        			System.out.println(frequencyOfOtherNote(sum_of_frequencies,n_steps, true));
+        			System.out.println(frequencyOfOtherNote(sum_of_frequencies,n_steps));
     			}
         		if(combo_2.getSelectedItem().equals("Get note for frequency")){
         			getNoteForFrequency(true);
@@ -142,7 +142,7 @@ Runnable {
         			getFrequencyForNote(true, false);
         		}
             	if(combo_2.getSelectedItem().equals("Test if two notes are enharmonically equivalent")) {
-            		enharmonicEquivalence(true);
+            		enharmonicEquivalence(true, false);
             	}
             	if(combo_2.getSelectedItem().equals("Test if your note is valid")) {
             		System.out.println(Note.isValidNote(note_for_frequency));
@@ -167,7 +167,7 @@ Runnable {
         			getFrequencyForNote(true, true);
         		}
             	if(combo_2.getSelectedItem().equals("Test if two notes are enharmonically equivalent")) {
-            		enharmonicEquivalence(false);
+            		enharmonicEquivalence(false, true);
             	}
             	if(combo_2.getSelectedItem().equals("Test if your note is valid")) {
             		isNoteValid(true, true);
@@ -181,7 +181,7 @@ Runnable {
         			getFrequencyForNote(true, false); 		
             	}
             	if(combo_2.getSelectedItem().equals("Test if two notes are enharmonically equivalent")) {
-            		enharmonicEquivalence(true);
+            		enharmonicEquivalence(true, false);
             	}
             	if(combo_2.getSelectedItem().equals("Test if your note is valid")) {
             		System.out.println(Note.isValidNote(first_note));
@@ -196,14 +196,14 @@ Runnable {
         				
             	}
             	if(combo_2.getSelectedItem().equals("Test if two notes are enharmonically equivalent")) {
-            		System.out.println(Note.isSameNote(first_note, second_note));
+            		enharmonicEquivalence(false, true);
             	}
             	if(combo_2.getSelectedItem().equals("Test if your note is valid")) {
             		isNoteValid(true, true);
             		
             	}
             	if(combo_2.getSelectedItem().equals("Play two notes")) {
-            		playTwoNotesMethod(true, true);
+            		playTwoNotesMethod(false, true);
             	}
         	}
         }
@@ -217,8 +217,8 @@ Runnable {
     	}
     }
     
-    public static double frequencyOfOtherNote(double frequency, int number_of_notes_away, 
-    		boolean isTherePreviousFrequency) {
+    public static double frequencyOfOtherNote(double frequency, int number_of_notes_away) {
+    	System.out.println(frequency*Math.pow(2, number_of_notes_away/12));
 		return frequency*Math.pow(2, number_of_notes_away/12);
 	}
     public static void playTwoNotes(String note, String note2) {
@@ -251,19 +251,17 @@ Runnable {
     	}
     public boolean isNoteValid(boolean isTherePreviousNote, boolean areThereTwoPreviousNotes) {
     	if(areThereTwoPreviousNotes) {
-    		System.out.println("Which note would you like to use? Please enter 1 or 2");
-			note_to_use = "W";
-			while(note_to_use != "1" || note_to_use != "2") {
-			note_to_use = scanner2.next();
-				if(note_to_use != "1" || note_to_use != "2") {
-					System.out.println("Please enter 1 or 2");
-				}
+    		System.out.println("Which note would you like to use?");
+			note_to_use = -1;
+			while(note_to_use != 1 && note_to_use != 2) {
+				System.out.println("Please enter 1 or 2");
+				note_to_use = scanner2.nextInt();
 			}
-			if(note_to_use == "1") {
+			if(note_to_use == 1) {
 				System.out.println(Note.isValidNote(first_note));
 				return Note.isValidNote(first_note);
 			}
-			else if(note_to_use == "2") {
+			else if(note_to_use == 2) {
 				System.out.println(Note.isValidNote(second_note));
 				return Note.isValidNote(second_note);
 			}	
@@ -329,21 +327,19 @@ Runnable {
     }
     public double getFrequencyForNote(boolean isTherePreviousNote, boolean areThereTwoPreviousNotes) {
     	if(areThereTwoPreviousNotes) {
-    		System.out.println("Which note would you like to use? Please enter 1 or 2");
-			note_to_use = "W";
-			while(note_to_use != "1" || note_to_use != "2") {
-			note_to_use = scanner2.next();
-				if(note_to_use != "1" || note_to_use != "2") {
-					System.out.println("Please enter 1 or 2");
-				}
+    		System.out.println("Which note would you like to use?");
+			note_to_use = -1;
+			while(note_to_use != 1 && note_to_use != 2) {
+				System.out.println("Please enter 1 or 2");
+				note_to_use = scanner2.nextInt();
 			}
-			if(note_to_use == "1") {
+			if(note_to_use == 1) {
 				midi_value = convertToPitch(first_note);
 			}
-			else if(note_to_use == "2") {
+			else if(note_to_use == 2) {
 				midi_value = convertToPitch(second_note);
 			}
-			System.out.println("The frequency value of your note is: " + Note.getFrequencyForNote(midi_value));
+			System.out.println(Note.getFrequencyForNote(midi_value));
 			get_frequency_for_note = Note.getFrequencyForNote(midi_value);
 			return get_frequency_for_note;
     	}
@@ -353,7 +349,7 @@ Runnable {
 		while (midi_value > 127 || midi_value < 0) {
 		    midi_value = scanner2.nextInt();
 		    if (midi_value <= 127 || midi_value >= 0 ) {
-		    	System.out.println("The frequency value of your note is: " + Note.getFrequencyForNote(midi_value));
+		    	System.out.println(Note.getFrequencyForNote(midi_value));
 		    	get_frequency_for_note = Note.getFrequencyForNote(midi_value);
 		    	previous_frequency = get_frequency_for_note;
 		    } else {
@@ -364,9 +360,8 @@ Runnable {
     	else {
     		get_frequency_for_note = Note.getFrequencyForNote(midi_value);
 	    	previous_frequency = get_frequency_for_note;
-    		return Note.getFrequencyForNote(midi_value);
+	    	System.out.println(Note.getFrequencyForNote(midi_value));
     	}
-    	
 		return Note.getFrequencyForNote(midi_value);
     }
     
@@ -387,7 +382,7 @@ Runnable {
 				System.out.println("Please input a valid number of steps");
 			}
 		}
-		frequency_of_other_note = frequencyOfOtherNote(first_frequency,n_steps, isTherePreviousFrequency);
+		frequency_of_other_note = frequencyOfOtherNote(first_frequency,n_steps);
 		if(!isTherePreviousFrequency) {
 			previous_frequency = frequency_of_other_note;
 		}
@@ -395,44 +390,114 @@ Runnable {
 		return frequency_of_other_note;
     }
     public void playTwoNotesMethod(boolean isTherePreviousNote, boolean areThereTwoPreviousNotes) {
-    	if(areThereTwoPreviousNotes) {
-    		System.out.println("Do you want to play the same previous 2 notes? Please"
-    				+ "enter yes or no");
-    		yes_or_no = scanner2.next();
-    		while(yes_or_no != "yes" || yes_or_no != "no") {
-    			yes_or_no = scanner2.next();
-    				if(yes_or_no != "yes" || yes_or_no != "no") {
-    					System.out.println("Please enter yes or no");
-    				}
-    			}
-    			if(yes_or_no == "yes") {
-    				playTwoNotes(first_note, second_note);
-    			}
-    			else if(yes_or_no == "no") {
-    				playTwoNotesMethod(false, false);
-    			}
+    	if(areThereTwoPreviousNotes && !isTherePreviousNote) {
+    		yes_or_no = -1;
+    		System.out.println("Do you want to play the same previous 2 notes? enter 1 for yes or 2 for no");
+    		yes_or_no = scanner2.nextInt();
+    		while(yes_or_no != 1 && yes_or_no != 2) {
+    			System.out.println("Please enter 1 or 2");
+    			yes_or_no = scanner2.nextInt();
+    		}
+    		if(yes_or_no == 1) {
+    			playTwoNotes(first_note, second_note);
+    		}
+   			else {
+   				first_note = "Z";
+   	    		System.out.println("What is your first note?");
+   	    		first_note = scanner2.next();
+   	    		while(!Note.isValidNote(first_note)) {
+   	    			System.out.println("Please enter a valid note");
+   	    			first_note = scanner2.next();
+   	    		}
+   	    		System.out.println("What is your second note?");
+   	    		second_note = "Z";
+   	    		second_note = scanner2.next();
+   	    		while(!Note.isValidNote(second_note)) {
+   	 				System.out.println("Please enter a valid note");
+   	     			second_note = scanner2.next();
+   	     		}
+   	    		playTwoNotes(first_note, second_note);
+    		}
     	}
-    	if(!isTherePreviousNote) {
-    		System.out.println("Please enter your first note");
+    	if(isTherePreviousNote && !areThereTwoPreviousNotes) {
+    		System.out.println("What is your second note?");
+        	second_note = scanner2.next();
+    		while(!Note.isValidNote(second_note)) {
+    				System.out.println("Please enter a valid note");
+        			second_note = scanner2.next();
+        		}
+    		playTwoNotes(first_note, second_note);
+    	}
+    	if(!isTherePreviousNote && !areThereTwoPreviousNotes) {
+    		first_note = "Z";
+    		System.out.println("What is your first note?");
     		first_note = scanner2.next();
+    		while(!Note.isValidNote(first_note)) {
+    			System.out.println("Please enter a valid note");
+    			first_note = scanner2.next();
+    		}
+    		second_note = "Z";
+    		System.out.println("What is your second note?");
+        	second_note = scanner2.next();
+    		while(!Note.isValidNote(second_note)) {
+    				System.out.println("Please enter a valid note");
+        			second_note = scanner2.next();
+        		}
+    		playTwoNotes(first_note, second_note);
     	}
-    	else {
-    		first_note = previous_note;
-    	}
-		System.out.println("Please enter your second note");
-		second_note = scanner2.next();
-		playTwoNotes(first_note, second_note);
+		
     }
-    public boolean enharmonicEquivalence(boolean isTherePreviousNote) {
+    public boolean enharmonicEquivalence(boolean isTherePreviousNote, boolean areThereTwoPreviousNotes) {
     	if(isTherePreviousNote) {
     		first_note = previous_note;
     	}
-    	else {
+    	if(!isTherePreviousNote && !areThereTwoPreviousNotes) {
+    		first_note = "Z";
     		System.out.println("What is your first note?");
     		first_note = scanner2.next();
+    		while(!Note.isValidNote(first_note)) {
+    			System.out.println("Please enter a valid note");
+    			first_note = scanner2.next();
+    		}
+    	System.out.println("What is your second note?");
+    	second_note = "Z";
+    	second_note = scanner2.next();
+		while(!Note.isValidNote(second_note)) {
+				System.out.println("Please enter a valid note");
+    			second_note = scanner2.next();
+    		}
     	}
-		System.out.println("What is your second note?");
-		second_note = scanner2.next();
+    	if(!isTherePreviousNote && areThereTwoPreviousNotes) {
+    		yes_or_no = -1;
+    		System.out.println("Do you want to test the previous 2 notes? enter 1 for yes or 2 for no");
+    		yes_or_no = scanner2.nextInt();
+    		while(yes_or_no != 1 && yes_or_no != 2) {
+    			System.out.println("Please enter 1 or 2");
+    			yes_or_no = scanner2.nextInt();
+    		}
+    		if(yes_or_no == 1) {
+    			System.out.println(Note.isSameNote(first_note, second_note));
+    			return Note.isSameNote(first_note, second_note);
+    		}
+   			else {
+   				first_note = "Z";
+   				System.out.println("What is your first note?");
+   				first_note = scanner2.next();
+   	    		while(!Note.isValidNote(first_note)) {
+   	    			System.out.println("Please enter a valid note");
+   	    			first_note = scanner2.next();
+   	    		}
+   	    		second_note = "Z";
+   	    		System.out.println("What is your second note?");
+   	    		second_note = scanner2.next();
+   	    		while(!Note.isValidNote(second_note)) {
+   	 				System.out.println("Please enter a valid note");
+   	     			second_note = scanner2.next();
+   	     		}
+   	    		System.out.println(Note.isSameNote(first_note, second_note));
+   	    		return Note.isSameNote(first_note, second_note);
+    		}
+    	}
 		System.out.println(Note.isSameNote(first_note, second_note));
 		return Note.isSameNote(first_note, second_note);
     }
