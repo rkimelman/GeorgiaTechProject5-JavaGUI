@@ -108,7 +108,7 @@ Runnable {
             	}});
         // references: https://www.titanwolf.org/Network/q/7bd11bfe-71de-4aad-ba55-7d44fd6895f0/y &
 	// https://www.tabnine.com/code/java/methods/javax.swing.JComboBox/addActionListener
-	//wrote gui that lets you experiment with JFugue. Prototyping tool to allow you to play around with JFugue - step to make
+	// note: wrote gui that lets you experiment with JFugue. Prototyping tool to allow you to play around with JFugue - step to make
         // a more robust program. A lot of redundancy because it was easier to prototype this code. Just wanted to have something functional.
         // next step would be to create a more general program. Since wriing this code i've become aware of best practices in software design
         // and patterns could be a useful replacement for reading in booleans to the methods.
